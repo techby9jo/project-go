@@ -1,0 +1,31 @@
+version: "3.9"
+services:
+  web:
+    container_name: web-gateway
+    image: nginx:latest
+    volumes:
+      - /nginx/config:/etc/nginx/
+    ports:
+      - 80
+    networks:
+      - service-api
+  api:
+    container_name: webapi
+    image: golang:1.23
+    ports:
+      - 8081
+    networks:
+      - service-api
+      
+  mysql:
+    container_name: mysql-server
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD = "P@sasw0rd001"
+    volumes:
+      - /mysql-server/mysql-data:/var/lib/mysql/
+      - /mysql-server:/etc/mysql/conf.d/
+    ports:
+      - 3306
+    networks:
+      - service-api
